@@ -1,0 +1,45 @@
+
+struct Channel{
+  public:
+  int inPin;
+  int inVal;
+  int outPin;
+  int outVal;
+  
+};
+
+Channel throttle = {3,0,9,0};
+Channel steering = {5,0,10,0};
+
+void setup() 
+{
+  pinMode(throttle.inPin, INPUT);
+  pinMode(throttle.outPin, OUTPUT);
+  pinMode(steering.inPin, INPUT);
+  pinMode(steering.outPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() 
+{
+  channelSend(throttle.outPin,channelRecieve(throttle));
+  channelSend(steering.outPin,channelRecieve(throttle));
+  throttle.inVal = channelRecieve(throttle);
+  
+  Serial.print("Throttle: ");
+  Serial.print(throttle.inVal);
+  Serial.print(" Steering: ");
+  Serial.println(steering.inVal);
+}
+
+void channelSend (int sendPin, int sendVal)
+{
+  digitalWrite(sendPin, HIGH);
+  delayMicroseconds(sendVal);
+  digitalWrite(sendPin, LOW);
+}
+
+int channelRecieve (struct Channel chan)
+{
+    return pulseIn(chan.inPin, HIGH);
+}
