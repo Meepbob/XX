@@ -34,36 +34,36 @@ void loop()
 
 void throttleActive()
 {
-  channelSend(throttle.outPin,channelRecieve(throttle));
-  throttle.inVal = channelRecieve(throttle);
+  channelSend(throttle.outPin,channelRecieve(&throttle));
+  throttle.inVal = channelRecieve(&throttle);
   Serial.print("Throttle: ");
   Serial.println(throttle.inVal);
 }
 
 void steeringActive()
 {
-  channelSend(steering.outPin,channelRecieve(steering));
-  steering.inVal = channelRecieve(steering);
+  channelSend(steering.outPin,channelRecieve(&steering));
+  steering.inVal = channelRecieve(&steering);
   Serial.print(" Steering: ");
   Serial.println(steering.inVal);
 }
 
 void auxActive()
 {
-  channelSend(aux.outPin,channelRecieve(aux));
-  aux.inVal = channelRecieve(aux);
+  channelSend(aux.outPin,channelRecieve(&aux));
+  aux.inVal = channelRecieve(&aux);
   Serial.print(" Aux: ");
   Serial.println(aux.inVal);
 }
 
-void channelSend (int sendPin, int sendVal)
+void channelSend(int sendPin, int sendVal)
 {
   digitalWrite(sendPin, HIGH);
   delayMicroseconds(sendVal);
   digitalWrite(sendPin, LOW);
 }
 
-int channelRecieve (struct Channel chan)
+int channelRecieve(struct Channel *chan)
 {
-    return pulseIn(chan.inPin, HIGH);
+    return pulseIn(chan->inPin, HIGH);
 }
